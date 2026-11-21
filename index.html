@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101d42">
+<meta name="description" content="CREATOR FITNESS — персональный трекер домашних тренировок">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>CREATOR FITNESS</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1224;--card:#121e36;--line:#263653;--muted:#9aabc5;--blue:#2563eb;--green:#22c55e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f4f7ff;font:16px system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:760px;margin:auto;padding:16px 14px 36px}
+.hero{padding:22px;border-radius:22px;background:linear-gradient(135deg,#101d42,#164e91);box-shadow:0 12px 32px #0004}
+.eyebrow{font-size:11px;letter-spacing:2px;color:#bfdbfe;font-weight:700}.brand{font-size:27px;font-weight:900;letter-spacing:-1px;margin:8px 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}.stat small{display:block;color:#bfdbfe;font-size:11px}.stat strong{font-size:25px}
+.progress{height:9px;border-radius:20px;background:#ffffff35;overflow:hidden;margin-top:13px}.progress i{display:block;height:100%;background:#4ade80;width:0}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#111c32;padding:5px;border-radius:14px;margin:15px 0}
+button{font:inherit;color:inherit;cursor:pointer}nav button{border:0;background:transparent;color:var(--muted);padding:11px 4px;border-radius:10px;font-size:13px}nav button.active{background:var(--blue);color:white}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.day{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:13px;text-align:left;min-width:0}.day.active{border:2px solid #60a5fa;background:#172d53}
+.muted{color:var(--muted)}.small{font-size:12px}.tag{font-size:11px;background:#1d2c47;color:#bfdbfe;border-radius:20px;padding:5px 9px}
+.bar{height:8px;background:#25344d;border-radius:20px;overflow:hidden}.bar i{display:block;height:100%;background:var(--green);width:0}
+.exercise{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line)}.exercise:last-child{border:0}
+.exercise input{width:22px;height:22px;accent-color:var(--blue);flex-shrink:0;margin-top:1px}
+.primary,.secondary{width:100%;padding:12px;border-radius:12px;font-weight:700;border:0;margin-top:10px}.primary{background:var(--blue)}.secondary{background:#1d2c47;border:1px solid var(--line)}
+textarea{width:100%;padding:11px;background:#0e192d;border:1px solid var(--line);border-radius:12px;color:white;font:inherit;resize:vertical}
+section[hidden]{display:none!important}.history-item{padding:11px 0;border-bottom:1px solid var(--line)}.history-item:last-child{border:0}
+footer{text-align:center;color:var(--muted);font-size:11px;margin-top:22px}
+@media(min-width:600px){main{padding-top:26px}.brand{font-size:32px}}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+ <div class="eyebrow">YOUR PERSONAL FITNESS APP</div>
+ <div class="brand">CREATOR FITNESS <span aria-hidden="true">🏋️</span></div>
+ <div style="color:#dbeafe;font-size:13px">Твоя дисциплина. Твой прогресс.</div>
+ <div class="stats">
+  <div class="stat"><small>НЕДЕЛЯ</small><strong id="weekNum">1</strong></div>
+  <div class="stat"><small>ТРЕНИРОВКИ</small><strong id="workoutsNum">0</strong></div>
+  <div class="stat"><small>ВЫПОЛНЕНО</small><strong id="percent">0%</strong></div>
+ </div>
+ <div class="progress"><i id="heroBar"></i></div>
+</header>
+<nav>
+ <button class="active" data-tab="home">⌂ Главная</button>
+ <button data-tab="train">▤ Тренировки</button>
+ <button data-tab="stats">↗ Прогресс</button>
+</nav>
+<section id="home">
+ <div style="display:flex;justify-content:space-between;align-items:center;margin:17px 0 10px"><b>Твой план</b><span class="tag">4 дня / неделя</span></div>
+ <div class="grid" id="dayCards"></div>
+ <div class="panel"><b>🎯 Текущий этап</b><p id="phase" class="muted small">Освоение техники</p><div class="bar"><i id="phaseBar"></i></div><p id="phaseText" class="muted small">Неделя 1 из 4</p></div>
+ <div class="panel"><b>📌 Совет недели</b><p id="tip" class="muted small">Сосредоточься на правильной технике и контроле движений.</p></div>
+ <div class="panel"><b>Твои параметры</b><div class="grid small" style="margin-top:12px"><div>Вес тела<br><b>66 кг</b></div><div>Гантели<br><b>2 × 8 кг</b></div><div>Место<br><b>Дома</b></div><div>Уровень<br><b>Средний</b></div></div></div>
+</section>
+<section id="train" hidden>
+ <h3>Твои тренировки</h3><div class="grid" id="daySelect"></div>
+ <div class="panel">
+  <div style="display:flex;justify-content:space-between;gap:8px"><div><b id="dayTitle">Понедельник</b><div id="daySubtitle" class="muted small">Грудь, плечи и трицепс</div></div><span id="dayCount" class="tag">0/5</span></div>
+  <div class="bar" style="margin-top:12px"><i id="dayBar"></i></div>
+  <div id="exerciseList"></div>
+  <label for="notes" class="small"><b>Заметки о тренировке</b></label><textarea id="notes" rows="3" placeholder="Как прошла тренировка?"></textarea>
+  <button id="finishBtn" class="primary">Завершить тренировку</button>
+  <p class="muted small">Не работай через боль. Если вес слишком тяжёлый и техника нарушается, используй более лёгкий вариант упражнения.</p>
+ </div>
+</section>
+<section id="stats" hidden>
+ <h3>Твой прогресс</h3>
+ <div class="grid"><div class="panel"><div class="muted small">Завершено занятий</div><strong id="statSessions">0</strong></div><div class="panel"><div class="muted small">Отмечено упражнений</div><strong id="statExercises">0</strong></div></div>
+ <div class="panel"><b>История тренировок</b><div id="history" class="muted small" style="margin-top:10px">Пока нет завершённых тренировок.</div></div>
+ <div class="panel"><b>Недельные этапы</b><div id="stages" style="margin-top:12px"></div></div>
+ <div class="panel"><b>Управление неделей</b><p class="muted small">После завершения хотя бы одной тренировки можно перейти к следующей неделе. История сохранится.</p><button id="nextWeek" class="primary">Начать следующую неделю</button><button id="resetBtn" class="secondary">Сбросить весь прогресс</button></div>
+</section>
+<footer>CREATOR FITNESS · TRAIN SMART · RECOVER WELL</footer>
+</main>
+<script>
+const plans=[
+{name:'Понедельник',short:'ПН',title:'Грудь, плечи и трицепс',icon:'💪',items:[['Жим гантелей лёжа на полу','3 × 10'],['Жим гантелей вверх','2 × 10'],['Разведение гантелей в стороны','2 × 12'],['Разгибание руки с гантелью','2 × 10'],['Отжимания','2 × 8–12']]},
+{name:'Вторник',short:'ВТ',title:'Ноги и пресс',icon:'🦵',items:[['Приседания с гантелью','3 × 12'],['Румынская тяга','3 × 10'],['Выпады назад','2 × 10'],['Подъёмы на носки','3 × 15'],['Планка','3 × 20–30 сек.']]},
+{name:'Четверг',short:'ЧТ',title:'Спина и бицепс',icon:'🏋️',items:[['Тяга двух гантелей в наклоне','3 × 10'],['Тяга одной гантели','2 × 10 на руку'],['Сгибание рук на бицепс','3 × 10'],['Молотковые сгибания','2 × 10'],['Супермен','2 × 12']]},
+{name:'Суббота',short:'СБ',title:'Всё тело',icon:'🔥',items:[['Приседания с гантелями','2 × 12'],['Жим гантелей лёжа','2 × 10'],['Тяга гантелей в наклоне','2 × 10'],['Ягодичный мостик','3 × 12'],['Планка','2 × 30 сек.']]}
+];
+const phases=['Освоение техники','Контроль движений','Постепенный прогресс','Закрепление результатов'];
+const tips=['Сосредоточься на правильной технике.','Выполняй движения плавно и контролируемо.','Если техника уверенная, можно добавить одно повторение.','Закрепи технику и оцени самочувствие. Не увеличивай нагрузку резко.'];
+const fresh=()=>({week:1,checks:{},notes:{},history:[],finished:{}});
+let data=fresh();try{data={...data,...JSON.parse(localStorage.getItem('creatorFitnessV1')||'{}')}}catch(e){}
+let selected=0;const $=id=>document.getElementById(id),save=()=>localStorage.setItem('creatorFitnessV1',JSON.stringify(data));
+const key=(d,i)=>`${data.week}-${d}-${i}`,checked=(d,i)=>!!data.checks[key(d,i)];
+const total=()=>plans.reduce((s,p)=>s+p.items.length,0),done=()=>plans.reduce((s,p,d)=>s+p.items.filter((_,i)=>checked(d,i)).length,0),finished=()=>plans.filter((p,d)=>data.finished[data.week+'-'+d]).length;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function render(){
+ const n=done(),pct=Math.round(n/total()*100),phase=(data.week-1)%4;
+ $('weekNum').textContent=data.week;$('workoutsNum').textContent=finished();$('percent').textContent=pct+'%';$('heroBar').style.width=pct+'%';
+ $('phase').textContent=phases[phase];$('phaseBar').style.width=((phase+1)*25)+'%';$('phaseText').textContent=`Неделя ${data.week} · этап ${phase+1} из 4`;$('tip').textContent=tips[phase];
+ $('dayCards').innerHTML=plans.map((p,d)=>`<button class="day" data-open="${d}"><div style="font-size:22px">${p.icon}</div><b>${p.short} · ${p.name}</b><div class="muted small">${p.title}</div><div class="small" style="margin-top:8px">${data.finished[data.week+'-'+d]?'✓ Завершено':p.items.filter((_,i)=>checked(d,i)).length+'/'+p.items.length+' упражнений'}</div></button>`).join('');
+ $('daySelect').innerHTML=plans.map((p,d)=>`<button class="day ${d===selected?'active':''}" data-select="${d}"><b>${p.short}</b><div class="muted small">${p.title}</div><div class="small">${p.items.filter((_,i)=>checked(d,i)).length}/${p.items.length}</div></button>`).join('');
+ const p=plans[selected],count=p.items.filter((_,i)=>checked(selected,i)).length;
+ $('dayTitle').textContent=p.name;$('daySubtitle').textContent=p.title;$('dayCount').textContent=count+'/'+p.items.length;$('dayBar').style.width=count/p.items.length*100+'%';
+ $('exerciseList').innerHTML=p.items.map((it,i)=>`<label class="exercise"><input type="checkbox" data-check="${i}" ${checked(selected,i)?'checked':''}><span><b class="small">${it[0]}</b><div class="muted small">${it[1]}</div></span></label>`).join('');
+ $('notes').value=data.notes[selected]||'';$('finishBtn').disabled=!!data.finished[data.week+'-'+selected];$('finishBtn').textContent=$('finishBtn').disabled?'Тренировка завершена ✓':'Завершить тренировку';
+ $('statSessions').textContent=data.history.length;$('statExercises').textContent=data.history.reduce((s,h)=>s+h.count,0);
+ $('history').innerHTML=data.history.length?[...data.history].reverse().map(h=>`<div class="history-item"><b>${esc(h.day)}</b><div class="muted">Неделя ${h.week} · ${h.count} упражнений · ${esc(h.date)}</div>${h.note?`<div>${esc(h.note)}</div>`:''}</div>`).join(''):'Пока нет завершённых тренировок.';
+ $('stages').innerHTML=phases.map((x,i)=>`<div style="display:flex;gap:12px;align-items:center;margin:10px 0"><span style="background:${phase>=i?'#2563eb':'#263653'};border-radius:50%;width:28px;height:28px;display:grid;place-items:center">${i+1}</span><span class="small">${x}<div class="muted">Неделя ${Math.floor((data.week-1)/4)*4+i+1}</div></span></div>`).join('');
+ $('nextWeek').disabled=finished()===0;
+}
+function tab(name){['home','train','stats'].forEach(t=>$(t).hidden=t!==name);document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===name))}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.tab){tab(b.dataset.tab);return}
+ if(b.dataset.open!==undefined){selected=+b.dataset.open;tab('train');render();return}
+ if(b.dataset.select!==undefined){selected=+b.dataset.select;render();return}
+ if(b.id==='finishBtn'){const p=plans[selected],count=p.items.filter((_,i)=>checked(selected,i)).length;if(count!==p.items.length){alert('Отметь упражнения, которые действительно выполнил.');return}const k=data.week+'-'+selected;if(!data.finished[k]){data.finished[k]=true;data.history.push({week:data.week,day:p.name,count,date:new Date().toLocaleDateString('ru-RU'),note:data.notes[selected]||''});save();render()}return}
+ if(b.id==='nextWeek'){if(!finished())return;if(!confirm('Начать следующую неделю? История тренировок сохранится.'))return;data.week++;data.checks={};data.notes={};data.finished={};selected=0;save();render();tab('home');return}
+ if(b.id==='resetBtn'){if(!confirm('Сбросить весь прогресс и историю?'))return;data=fresh();selected=0;save();render();tab('home')}
+});
+document.addEventListener('change',e=>{if(e.target.dataset.check!==undefined){const k=key(selected,+e.target.dataset.check);if(e.target.checked)data.checks[k]=true;else delete data.checks[k];save();render()}});
+$('notes').addEventListener('input',e=>{data.notes[selected]=e.target.value;save()});
+render();
+if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>

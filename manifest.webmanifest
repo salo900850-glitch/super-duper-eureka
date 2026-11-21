@@ -1,0 +1,18 @@
+{
+  "name": "CREATOR FITNESS",
+  "short_name": "Creator Fit",
+  "description": "Персональный трекер домашних тренировок",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b1224",
+  "theme_color": "#101d42",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
